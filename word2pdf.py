@@ -1,6 +1,7 @@
 import os
-from docx2pdf import convert
 import pdfplumber
+from docx2pdf import convert
+
 
 def convert_word_to_pdf(dir1, dir2):
     files = [f for f in os.listdir(dir1) if f.endswith('.docx')]
@@ -32,7 +33,7 @@ def rename_pdf(folder_path):
                 data = text.split()
                 user_name = data[9]  # 個案姓名
                 user_id = data[13]  # 身分證
-                number = data[7][4:]  # 請款單號
+                number = data[7][3:]  # 請款單號
 
                 # 新檔案名稱
                 new_file_name = f"{user_name} {user_id} {number}.pdf"
