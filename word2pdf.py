@@ -42,7 +42,7 @@ def rename_pdf(folder_path):
 
                 # 重新命名檔案
                 os.rename(pdf_path, new_file_path)
-                print(f"{new_file_path} 轉換完成！")
+                print(new_file_name + '轉換完成！')
 
 
 
