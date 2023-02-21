@@ -1,5 +1,6 @@
 import os
 from docx2pdf import convert
+import pdfplumber
 
 def convert_word_to_pdf(dir1, dir2):
     files = [f for f in os.listdir(dir1) if f.endswith('.docx')]
@@ -15,5 +16,37 @@ def convert_word_to_pdf(dir1, dir2):
 
         print(f'{file} 轉換完成')
 
-#convert_word_to_pdf(要轉檔的路徑,轉檔目的地)
-convert_word_to_pdf(r'C:\Users\User\Desktop\word2pdf\word',r'C:\Users\User\Desktop\word2pdf\pdf')
+
+def rename_pdf(folder_path):
+    # 遍歷指定路徑下的所有 PDF 檔案
+    for file_name in os.listdir(folder_path):
+        if file_name.endswith('.pdf'):
+            # 讀取 PDF 檔案
+            pdf_path = os.path.join(folder_path, file_name)
+            with pdfplumber.open(pdf_path) as pdf:
+                # 讀取第二頁
+                page = pdf.pages[1]
+                text = page.extract_text()
+
+                # 擷取需要的資料
+                data = text.split()
+                user_name = data[9]  # 個案姓名
+                user_id = data[13]  # 身分證
+                number = data[7][4:]  # 請款單號
+
+                # 新檔案名稱
+                new_file_name = f"{user_name} {user_id} {number}.pdf"
+                new_file_path = os.path.join(folder_path, new_file_name)
+                pdf.close()
+
+                # 重新命名檔案
+                os.rename(pdf_path, new_file_path)
+                print(f"{new_file_path} 轉換完成！")
+
+
+
+#convert_word_to_pdf(轉檔路徑,轉檔目的地)
+convert_word_to_pdf(r'C:\Users\Pin\Desktop\word2pdf\word',r'C:\Users\Pin\Desktop\word2pdf\pdf')
+
+#rename_pdf(要重新命名的pdf路徑)
+rename_pdf(r'C:\Users\Pin\Desktop\word2pdf\pdf')
