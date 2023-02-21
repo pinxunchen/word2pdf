@@ -10,7 +10,7 @@ def convert_word_to_pdf(dir1, dir2):
         
         # 組合Word檔案和PDF檔案的完整路徑
         word_path = os.path.join(dir1, file)
-        pdf_path = os.path.join(dir2, file[:-5] + '.pdf')
+        pdf_path = os.path.join(dir2, file[:-5] + '.pdf') #:-5把.docx去掉換成.pdf
 
         # 將Word檔案轉換為PDF格式
         convert(word_path, pdf_path)
@@ -19,12 +19,14 @@ def convert_word_to_pdf(dir1, dir2):
 
 
 def rename_pdf(folder_path):
-    # 遍歷指定路徑下的所有 PDF 檔案
+    # for迴圈把路徑內所有.pdf檔
     for file_name in os.listdir(folder_path):
         if file_name.endswith('.pdf'):
+            
             # 讀取 PDF 檔案
             pdf_path = os.path.join(folder_path, file_name)
             with pdfplumber.open(pdf_path) as pdf:
+                
                 # 讀取第二頁
                 page = pdf.pages[1]
                 text = page.extract_text()
